@@ -238,7 +238,7 @@ def run(MODEL_DB_PATH, MODEL_CRNN_PATH, IMGPATH):
     model = Pytorch_model(MODEL_DB_PATH, post_p_thre=0.5)
     boxes_list, img = model.predict(IMGPATH)
     print(f"DBNet所使用的时间：{time.time() - a}s")
-    OUT.write(f"DBNet所使用的时间：{time.time() - a}s")
+    OUT.write(f"\nDBNet所使用的时间：{time.time() - a}s\n")
     a = time.time()
 
     # DBNet 模型处理部分 结束 
@@ -283,10 +283,11 @@ def run(MODEL_DB_PATH, MODEL_CRNN_PATH, IMGPATH):
     O = fitlabel(data, I)
     print(O)
     print(f"CRNN所使用的时间：{time.time() - a}s")
-    import json
-    OUT.write(json.dumps(O))
-    OUT.write(f"CRNN所使用的时间：{time.time() - a}s")
-
+    import json  
+    OUT.write(f"\nCRNN所使用的时间：{time.time() - a}s\n")
+    OUT.write("识别结果（json格式）：")
+    OUT.write(json.dumps(O,ensure_ascii=False))
+    
 if __name__ == "__main__":
     OUT = open("result.log","w")
     MODEL_DB_PATH = "/root/Design/postprocessing/saved_models/DBNet/loc.pth"
@@ -297,5 +298,5 @@ if __name__ == "__main__":
             if file.split(".")[-1] == "jpg":
                 run(MODEL_DB_PATH, MODEL_CRNN_PATH, os.path.join(root, file))
                 print("***********")
-                OUT.write("---------------")
+                OUT.write("---------------\n")
     OUT.close()
