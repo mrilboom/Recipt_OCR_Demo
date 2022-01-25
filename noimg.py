@@ -156,11 +156,11 @@ def crop_lines(points, img,IMGPATH):
         data.append(datum)
         ##
         # 画框、 保存
-        draw = ImageDraw.Draw(img)
-        draw.rectangle([point[0][0], point[0][1], point[1][0], point[1][1]], outline='red', width=2)
-        img.save(f"out_img/crop_result_{IMGPATH.split('.')[0].split('/')[-1]}.jpg")
+        # draw = ImageDraw.Draw(img)
+        # draw.rectangle([point[0][0], point[0][1], point[1][0], point[1][1]], outline='red', width=2)
+        # img.save(f"out_img/crop_result_{IMGPATH.split('.')[0].split('/')[-1]}.jpg")
         ##
-    return data, draw
+    return data
 
 
 """
@@ -254,7 +254,7 @@ def run(MODEL_DB_PATH, MODEL_CRNN_PATH, IMGPATH):
     points = get_retc(boxes_list)
     # 输入的是 cv 格式的img，需要转到PIL
     img = Image.fromarray(img)
-    data, draw = crop_lines(points, img, IMGPATH)
+    data = crop_lines(points, img, IMGPATH)
     # CRNN
     # 模型加载，最好常驻内存
     alphabet = alphabets.alphabet
@@ -271,9 +271,9 @@ def run(MODEL_DB_PATH, MODEL_CRNN_PATH, IMGPATH):
             datum["label"] = ""
             continue
         datum["label"] = crnn_recognition(datum["img"], model)
-        ttf = ImageFont.truetype("simsun.ttc", size=int((datum["point"][1][1]-datum["point"][0][1])/3))
-        draw.text((datum["point"][0][0], datum["point"][0][1]), datum["label"], font=ttf, fill=(255, 0, 0))
-    img.save(f"out_img/result_withText_{IMGPATH.split('.')[0].split('/')[-1]}.jpg")
+        # ttf = ImageFont.truetype("simsun.ttc", size=int((datum["point"][1][1]-datum["point"][0][1])/3))
+        # draw.text((datum["point"][0][0], datum["point"][0][1]), datum["label"], font=ttf, fill=(255, 0, 0))
+    # img.save(f"out_img/result_withText_{IMGPATH.split('.')[0].split('/')[-1]}.jpg")
     ##
     # 添加标签的文字
     ##
