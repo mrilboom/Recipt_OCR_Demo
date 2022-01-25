@@ -1,6 +1,5 @@
 # 计时
 import os
-import sys
 import time
 import numpy as np
 import Config
@@ -15,7 +14,6 @@ from post_processing import get_post_processing
 from torch.autograd import Variable
 from torchvision import transforms
 from PIL import Image, ImageDraw, ImageFont
-import sys
 
 
 
@@ -160,7 +158,7 @@ def crop_lines(points, img,IMGPATH):
         # 画框、 保存
         draw = ImageDraw.Draw(img)
         draw.rectangle([point[0][0], point[0][1], point[1][0], point[1][1]], outline='red', width=2)
-        img.save(f"/root/Design/postprocessing/out_img/crop_result_{IMGPATH.split('.')[0].split('/')[-1]}.jpg")
+        img.save(f"out_img/crop_result_{IMGPATH.split('.')[0].split('/')[-1]}.jpg")
         ##
     return data, draw
 
@@ -273,9 +271,9 @@ def run(MODEL_DB_PATH, MODEL_CRNN_PATH, IMGPATH):
             datum["label"] = ""
             continue
         datum["label"] = crnn_recognition(datum["img"], model)
-        ttf = ImageFont.truetype("/usr/share/fonts/chinese/simsun.ttc", size=int((datum["point"][1][1]-datum["point"][0][1])/3))
+        ttf = ImageFont.truetype("simsun.ttc", size=int((datum["point"][1][1]-datum["point"][0][1])/3))
         draw.text((datum["point"][0][0], datum["point"][0][1]), datum["label"], font=ttf, fill=(255, 0, 0))
-    img.save(f"/root/Design/postprocessing/out_img/result_withText_{IMGPATH.split('.')[0].split('/')[-1]}.jpg")
+    img.save(f"out_img/result_withText_{IMGPATH.split('.')[0].split('/')[-1]}.jpg")
     ##
     # 添加标签的文字
     ##
@@ -290,11 +288,12 @@ def run(MODEL_DB_PATH, MODEL_CRNN_PATH, IMGPATH):
     
 if __name__ == "__main__":
     OUT = open("result.log","w")
-    MODEL_DB_PATH = "/root/Design/postprocessing/saved_models/DBNet/loc.pth"
-    MODEL_CRNN_PATH = "/root/Design/postprocessing/saved_models/CRNN/model_best.pth"
-    DIR = "/root/Design/postprocessing/test_imgs"
+    MODEL_DB_PATH = "saved_models/DBNet/loc.pth"
+    MODEL_CRNN_PATH = "saved_models/CRNN/model_best.pth"
+    DIR = "test_imgs"
     for root, dirs, files in os.walk(DIR):
         for file in files:
+            print(1)
             if file.split(".")[-1] == "jpg":
                 run(MODEL_DB_PATH, MODEL_CRNN_PATH, os.path.join(root, file))
                 print("***********")
