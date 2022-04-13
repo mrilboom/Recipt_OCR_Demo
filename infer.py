@@ -19,10 +19,6 @@ from PIL import Image, ImageDraw, ImageFont
 
 ###################
 # DBNet 模型处理部分
-# -*- coding: utf-8 -*-
-# @Time    : 2019/8/24 12:06
-# @Author  : zhoujun
-
 
 def get_transforms(transforms_config):
     tr_list = []
@@ -189,8 +185,9 @@ def contain(word: str, key: str):
     return c == len(key)
 
 
-def fitName(results: list):
-    L = ["代码", "号码", "车号", "证号", "日期", "上车", "下车", "单价", "里程", "等候", "金额", "卡号", "原额", "余额"]
+def fitName(results: list,L: list):
+    # 识别列表L设置为参数传入
+    # L = ["代码", "号码", "车号", "证号", "日期", "上车", "下车", "单价", "里程", "等候", "金额", "卡号", "原额", "余额"]
     I = {}
 
     for l in L:
